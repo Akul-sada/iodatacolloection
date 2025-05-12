@@ -21,12 +21,22 @@ router.get('/', (req, res) => {
     res.send(`'Hello World!'`);
 });
 
-app.get("/get-ip", (req, res) => {
-  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-  res.json({ ip: ip });
+router.get("/get-ip", (req, res) => {
+  try {
+        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+        res.json({ ip: ip });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to retrieve IP address' });
+    }
 });
 
 app.use('/.netlify/functions/index', router);
+
+// Global error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack); // Log the error for debugging
+    res.status(500).json({ error: 'Something went wrong!' });
+});
 
 // Add this for local development
 if (process.env.NODE_ENV !== 'production') {
