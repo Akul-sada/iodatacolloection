@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 // Define the router
 const router = express.Router();
 
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
     res.send(`'Hello World!'`);
 });
 
