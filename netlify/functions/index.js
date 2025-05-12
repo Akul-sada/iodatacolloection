@@ -17,6 +17,8 @@ app.get('/', (req, res) => {
     res.send(`'Hello World!'`);
 });
 
+app.use('/.netlify/functions/index', router);
+
 // Add this for local development
 if (process.env.NODE_ENV !== 'production') {
     app.listen(port, () => {
